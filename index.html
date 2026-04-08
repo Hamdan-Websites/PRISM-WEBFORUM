@@ -1,0 +1,1377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PRISM Digital Co. — Website Project Discovery</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --prism-dark: #0c0c1d;
+    --prism-card: #12122a;
+    --prism-card-hover: #181840;
+    --prism-border: #2a2a52;
+    --prism-border-focus: #6c63ff;
+    --prism-violet: #6c63ff;
+    --prism-cyan: #00d9ff;
+    --prism-pink: #ff6b9d;
+    --prism-green: #00e88f;
+    --prism-text: #e8e8f0;
+    --prism-text-dim: #8888a8;
+    --prism-text-muted: #55556e;
+    --prism-field-bg: #0f0f26;
+    --prism-field-border: #2a2a4a;
+    --prism-gradient: linear-gradient(135deg, #6c63ff 0%, #00d9ff 50%, #ff6b9d 100%);
+    --radius: 10px;
+    --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html {
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: var(--prism-violet) var(--prism-dark);
+  }
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--prism-dark); }
+  ::-webkit-scrollbar-thumb { background: var(--prism-violet); border-radius: 3px; }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--prism-dark);
+    color: var(--prism-text);
+    line-height: 1.6;
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  /* ─── Ambient Background ─── */
+  body::before {
+    content: '';
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background:
+      radial-gradient(ellipse at 20% 20%, rgba(108,99,255,0.08) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 80%, rgba(0,217,255,0.06) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 50%, rgba(255,107,157,0.04) 0%, transparent 40%);
+    animation: ambientDrift 20s ease-in-out infinite alternate;
+    pointer-events: none;
+    z-index: 0;
+  }
+  @keyframes ambientDrift {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    100% { transform: translate(-3%, 2%) rotate(3deg); }
+  }
+
+  /* ─── Grain Overlay ─── */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ─── Layout ─── */
+  .wrapper {
+    position: relative;
+    z-index: 1;
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+  }
+
+  /* ─── Header ─── */
+  .header {
+    padding: 48px 0 40px;
+    text-align: left;
+    position: relative;
+  }
+  .header__bar {
+    height: 3px;
+    border-radius: 2px;
+    background: var(--prism-gradient);
+    margin-bottom: 36px;
+  }
+  .header__brand {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  .header__brand-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 2.4rem;
+    letter-spacing: -1px;
+    color: #fff;
+  }
+  .header__brand-suffix {
+    font-family: 'Syne', sans-serif;
+    font-weight: 400;
+    font-size: 2.4rem;
+    color: var(--prism-cyan);
+    letter-spacing: -1px;
+  }
+  .header__title {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 600;
+    font-size: 1.15rem;
+    color: var(--prism-text);
+    margin-bottom: 4px;
+    letter-spacing: 0.5px;
+  }
+  .header__credit {
+    font-size: 0.78rem;
+    color: var(--prism-text-muted);
+    letter-spacing: 0.3px;
+  }
+  .header__credit span {
+    background: var(--prism-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 600;
+  }
+
+  /* ─── Intro ─── */
+  .intro {
+    background: var(--prism-card);
+    border: 1px solid var(--prism-border);
+    border-radius: var(--radius);
+    padding: 28px 32px;
+    margin-bottom: 40px;
+    font-size: 1.05rem;
+    line-height: 1.75;
+    color: #e2e2f2;
+    position: relative;
+    overflow: hidden;
+  }
+  .intro::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--prism-gradient);
+  }
+  .intro strong { color: var(--prism-text); font-weight: 600; }
+
+  /* ─── Progress Bar ─── */
+  .progress-wrap {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(12,12,29,0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 14px 0 10px;
+    margin: 0 -24px;
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.72rem;
+    color: var(--prism-text-muted);
+    margin-bottom: 6px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .progress-track {
+    width: 100%;
+    height: 4px;
+    background: var(--prism-field-border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    width: 0%;
+    background: var(--prism-gradient);
+    border-radius: 2px;
+    transition: width 0.5s ease;
+  }
+
+  /* ─── Section ─── */
+  .section {
+    margin-bottom: 36px;
+    animation: fadeUp 0.5s ease both;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .section__header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 6px;
+  }
+  .section__number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--prism-cyan);
+    background: rgba(0,217,255,0.08);
+    border: 1px solid rgba(0,217,255,0.2);
+    padding: 5px 12px;
+    border-radius: 6px;
+    letter-spacing: 1px;
+    flex-shrink: 0;
+  }
+  .section__title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1.65rem;
+    color: #fff;
+  }
+  .section__desc {
+    font-size: 1.08rem;
+    color: #e2e2f2;
+    margin-bottom: 26px;
+    padding-left: 0;
+    font-style: italic;
+    line-height: 1.6;
+  }
+
+  /* ─── Field Groups ─── */
+  .field {
+    margin-bottom: 22px;
+  }
+  .field__label {
+    display: block;
+    font-weight: 700;
+    font-size: 1.22rem;
+    color: #ffffff;
+    margin-bottom: 8px;
+    letter-spacing: 0.2px;
+    line-height: 1.45;
+  }
+  .field__label .req {
+    color: var(--prism-pink);
+    font-weight: 400;
+    margin-left: 3px;
+  }
+  .field__hint {
+    font-size: 1.0rem;
+    color: #e2e2f2;
+    margin-bottom: 10px;
+    font-style: italic;
+    line-height: 1.5;
+  }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="url"],
+  textarea {
+    width: 100%;
+    background: var(--prism-field-bg);
+    border: 1px solid var(--prism-field-border);
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.02rem;
+    color: var(--prism-text);
+    transition: border-color var(--transition), box-shadow var(--transition);
+    outline: none;
+    resize: vertical;
+  }
+  input:focus, textarea:focus {
+    border-color: var(--prism-violet);
+    box-shadow: 0 0 0 3px rgba(108,99,255,0.15);
+  }
+  input::placeholder, textarea::placeholder {
+    color: var(--prism-text-muted);
+    font-weight: 300;
+  }
+  textarea { min-height: 90px; }
+
+  /* ─── Checkbox & Radio ─── */
+  .options-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  @media (min-width: 580px) {
+    .options-grid--2col { grid-template-columns: 1fr 1fr; }
+  }
+  .option-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 14px;
+    background: var(--prism-field-bg);
+    border: 1px solid var(--prism-field-border);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all var(--transition);
+    position: relative;
+  }
+  .option-item:hover {
+    border-color: var(--prism-border-focus);
+    background: var(--prism-card-hover);
+  }
+  .option-item input[type="checkbox"],
+  .option-item input[type="radio"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--prism-field-border);
+    background: transparent;
+    flex-shrink: 0;
+    margin-top: 1px;
+    cursor: pointer;
+    transition: all var(--transition);
+    position: relative;
+  }
+  .option-item input[type="checkbox"] { border-radius: 4px; }
+  .option-item input[type="radio"] { border-radius: 50%; }
+  .option-item input[type="checkbox"]:checked {
+    background: var(--prism-violet);
+    border-color: var(--prism-violet);
+  }
+  .option-item input[type="checkbox"]:checked::after {
+    content: '✓';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+  }
+  .option-item input[type="radio"]:checked {
+    border-color: var(--prism-cyan);
+    background: transparent;
+  }
+  .option-item input[type="radio"]:checked::after {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--prism-cyan);
+  }
+  .option-item .opt-text {
+    font-size: 1.02rem;
+    color: var(--prism-text);
+    line-height: 1.5;
+  }
+  .option-item .opt-desc {
+    font-size: 0.92rem;
+    color: #e2e2f2;
+    margin-top: 3px;
+    line-height: 1.5;
+  }
+
+  /* ─── Style Cards (Section 6) ─── */
+  .style-card {
+    background: var(--prism-field-bg);
+    border: 1px solid var(--prism-field-border);
+    border-radius: var(--radius);
+    padding: 16px 18px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: all var(--transition);
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .style-card:hover {
+    border-color: var(--prism-violet);
+    background: var(--prism-card-hover);
+    transform: translateX(4px);
+  }
+  .style-card.selected {
+    border-color: var(--prism-violet);
+    box-shadow: 0 0 0 2px rgba(108,99,255,0.2), inset 0 0 0 1px rgba(108,99,255,0.1);
+  }
+  .style-card input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 20px; height: 20px;
+    border: 2px solid var(--prism-field-border);
+    border-radius: 5px;
+    flex-shrink: 0;
+    margin-top: 2px;
+    cursor: pointer;
+    transition: all var(--transition);
+    position: relative;
+  }
+  .style-card input[type="checkbox"]:checked {
+    background: var(--prism-violet);
+    border-color: var(--prism-violet);
+  }
+  .style-card input[type="checkbox"]:checked::after {
+    content: '✓';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .style-card__content { flex: 1; }
+  .style-card__name {
+    font-weight: 700;
+    font-size: 1.12rem;
+    color: #fff;
+    margin-bottom: 5px;
+  }
+  .style-card__desc {
+    font-size: 0.95rem;
+    color: #e2e2f2;
+    line-height: 1.6;
+  }
+
+  /* ─── Spectrum Sliders ─── */
+  .spectrum {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+    padding: 8px 0;
+  }
+  .spectrum__label {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #e2e2f2;
+    width: 105px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+  .spectrum__label--right {
+    text-align: left;
+  }
+  .spectrum input[type="range"] {
+    flex: 1;
+    appearance: none;
+    -webkit-appearance: none;
+    height: 4px;
+    background: var(--prism-field-border);
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+  }
+  .spectrum input[type="range"]::-webkit-slider-thumb {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: var(--prism-violet);
+    border: 3px solid var(--prism-dark);
+    box-shadow: 0 0 0 2px var(--prism-violet);
+    cursor: grab;
+    transition: transform 0.15s ease;
+  }
+  .spectrum input[type="range"]::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+  }
+  .spectrum input[type="range"]::-moz-range-thumb {
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: var(--prism-violet);
+    border: 3px solid var(--prism-dark);
+    box-shadow: 0 0 0 2px var(--prism-violet);
+    cursor: grab;
+  }
+
+  /* ─── Divider ─── */
+  .divider {
+    height: 1px;
+    background: var(--prism-gradient);
+    opacity: 0.4;
+    margin: 40px 0 32px;
+    border: none;
+  }
+
+  /* ─── Submit ─── */
+  .submit-wrap {
+    text-align: center;
+    padding: 40px 0 20px;
+  }
+  .submit-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 18px 56px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    letter-spacing: 0.5px;
+    color: #fff;
+    background: var(--prism-violet);
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all var(--transition);
+    box-shadow: 0 4px 24px rgba(108,99,255,0.3);
+  }
+  .submit-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--prism-gradient);
+    opacity: 0;
+    transition: opacity var(--transition);
+  }
+  .submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(108,99,255,0.45);
+  }
+  .submit-btn:hover::before { opacity: 1; }
+  .submit-btn span { position: relative; z-index: 1; }
+  .submit-btn:active { transform: translateY(0); }
+
+  /* ─── Success Overlay ─── */
+  .success-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(12,12,29,0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    padding: 40px;
+  }
+  .success-overlay.show { display: flex; }
+  .success-icon {
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    background: var(--prism-gradient);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    margin-bottom: 24px;
+    animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  @keyframes popIn {
+    from { transform: scale(0); }
+    to { transform: scale(1); }
+  }
+  .success-overlay h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.8rem;
+    color: #fff;
+    margin-bottom: 12px;
+  }
+  .success-overlay p {
+    color: var(--prism-text-dim);
+    max-width: 420px;
+    line-height: 1.7;
+  }
+
+  /* ─── Footer ─── */
+  .footer {
+    text-align: center;
+    padding: 32px 0;
+    border-top: 1px solid var(--prism-border);
+    margin-top: 20px;
+  }
+  .footer p {
+    font-size: 0.75rem;
+    color: var(--prism-text-muted);
+    letter-spacing: 0.5px;
+  }
+  .footer span {
+    background: var(--prism-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 600;
+  }
+
+  /* ─── Responsive ─── */
+  @media (max-width: 600px) {
+    .header__brand-name, .header__brand-suffix { font-size: 1.8rem; }
+    .section__title { font-size: 1.3rem; }
+    .wrapper { padding: 0 16px 60px; }
+    .spectrum__label { width: 75px; font-size: 0.8rem; }
+    .submit-btn { padding: 16px 40px; font-size: 1rem; }
+    .field__label { font-size: 1.08rem; }
+    .field__hint { font-size: 0.92rem; }
+    .section__desc { font-size: 0.95rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrapper">
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header__bar"></div>
+    <div class="header__brand">
+      <span class="header__brand-name">PRISM</span>
+      <span class="header__brand-suffix">digital co.</span>
+    </div>
+    <h1 class="header__title">Website Project Discovery Questionnaire</h1>
+    <p class="header__credit">Copywritten &amp; Designed by <span>PRISM Digital Co.</span> &mdash; Crafting Digital Experiences Through Your Unique Lens</p>
+  </header>
+
+  <!-- Intro -->
+  <div class="intro">
+    <strong>Welcome, and thank you for choosing PRISM Digital Co.</strong><br><br>
+    This questionnaire is designed to help us understand your brand, your goals, and the experience you want to create for your audience. Please answer each question as thoroughly as possible &mdash; the more detail you provide, the closer we get to delivering a website that truly reflects who you are <em>on the first pass.</em><br><br>
+    There are no wrong answers here. We want to see the world through your lens.
+  </div>
+
+  <!-- Progress -->
+  <div class="progress-wrap">
+    <div class="progress-label">
+      <span>Progress</span>
+      <span id="progressPct">0%</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+  </div>
+
+  <!-- ═══ FORM ═══ -->
+  <form id="prismForm" action="https://formspree.io/f/xlgoeobw" method="POST">
+    <!-- Hidden honeypot for spam -->
+    <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
+
+    <!-- ══════════════════════════════════════════════════ -->
+    <!-- SECTION 1: CLIENT INFORMATION -->
+    <!-- ══════════════════════════════════════════════════ -->
+    <hr class="divider">
+    <div class="section">
+      <div class="section__header">
+        <span class="section__number">01</span>
+        <h2 class="section__title">Client Information</h2>
+      </div>
+      <p class="section__desc">Let's start with the basics so we know who we're building for.</p>
+
+      <div class="field">
+        <label class="field__label">Full Name / Primary Contact <span class="req">*</span></label>
+        <input type="text" name="full_name" required placeholder="Jane Smith">
+      </div>
+      <div class="field">
+        <label class="field__label">Company / Brand Name <span class="req">*</span></label>
+        <input type="text" name="company_name" required placeholder="Acme Studios">
+      </div>
+      <div class="field">
+        <label class="field__label">Email Address <span class="req">*</span></label>
+        <input type="email" name="email" required placeholder="jane@acmestudios.com">
+      </div>
+      <div class="field">
+        <label class="field__label">Phone Number</label>
+        <input type="tel" name="phone" placeholder="+1 (555) 123-4567">
+      </div>
+      <div class="field">
+        <label class="field__label">Website URL (if you currently have one)</label>
+        <input type="url" name="current_website" placeholder="https://www.example.com">
+      </div>
+      <div class="field">
+        <label class="field__label">Social Media Handles</label>
+        <p class="field__hint">Instagram, LinkedIn, TikTok, Facebook, etc.</p>
+        <textarea name="social_media" rows="2" placeholder="@acmestudios on Instagram, linkedin.com/company/acme"></textarea>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════ -->
+    <!-- SECTION 2: BUSINESS OVERVIEW -->
+    <!-- ══════════════════════════════════════════════════ -->
+    <hr class="divider">
+    <div class="section">
+      <div class="section__header">
+        <span class="section__number">02</span>
+        <h2 class="section__title">Business Overview</h2>
+      </div>
+      <p class="section__desc">Help us understand the heart of your business and what makes you different.</p>
+
+      <div class="field">
+        <label class="field__label">In 2–3 sentences, describe what your business does. <span class="req">*</span></label>
+        <textarea name="business_description" rows="3" required placeholder="We are a boutique design studio specializing in..."></textarea>
+      </div>
+      <div class="field">
+        <label class="field__label">What products or services do you offer?</label>
+        <textarea name="products_services" rows="3" placeholder="List your core offerings..."></textarea>
+      </div>
+      <div class="field">
+        <label class="field__label">What industry or niche are you in?</label>
+        <input type="text" name="industry" placeholder="e.g., Health & Wellness, SaaS, Real Estate">
+      </div>
+      <div class="field">
+        <label class="field__label">What is your unique selling proposition (USP)?</label>
+        <p class="field__hint">What sets you apart from competitors?</p>
+        <textarea name="usp" rows="3" placeholder="We differentiate ourselves by..."></textarea>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════ -->
+    <!-- SECTION 3: TARGET AUDIENCE -->
+    <!-- ══════════════════════════════════════════════════ -->
+    <hr class="divider">
+    <div class="section">
+      <div class="section__header">
+        <span class="section__number">03</span>
+        <h2 class="section__title">Target Audience</h2>
+      </div>
+      <p class="section__desc">Knowing who you're speaking to shapes every design and content decision.</p>
+
+      <div class="field">
+        <label class="field__label">Who is your ideal customer or client? Describe them in detail.</label>
+        <p class="field__hint">Consider: age range, gender, location, income level, profession, lifestyle, interests.</p>
+        <textarea name="ideal_customer" rows="4" placeholder="Our ideal client is a 28-40 year old professional who values..."></textarea>
+      </div>
+      <div class="field">
+        <label class="field__label">What problem does your audience have that your business solves?</label>
+        <textarea name="audience_problem" rows="3" placeholder="Our customers struggle with..."></textarea>
+      </div>
+      <div class="field">
+        <label class="field__label">What emotions should a visitor feel when they land on your website?</label>
+        <p class="field__hint">e.g., trust, excitement, calm, urgency, curiosity, luxury, playfulness</p>
+        <textarea name="desired_emotions" rows="2" placeholder="I want visitors to feel..."></textarea>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════ -->
+    <!-- SECTION 4: PROJECT GOALS -->
+    <!-- ══════════════════════════════════════════════════ -->
+    <hr class="divider">
+    <div class="section">
+      <div class="section__header">
+        <span class="section__number">04</span>
+        <h2 class="section__title">Project Goals &amp; Scope</h2>
+      </div>
+      <p class="section__desc">What do you want your website to actually accomplish for your business?</p>
+
+      <div class="field">
+        <label class="field__label">What is the primary purpose of this website?</label>
+        <p class="field__hint">Select all that apply.</p>
+        <div class="options-grid options-grid--2col">
+          <label class="option-item"><input type="checkbox" name="purpose" value="Generate leads / enquiries"><span class="opt-text">Generate leads / enquiries</span></label>
+          <label class="option-item"><input type="checkbox" name="purpose" value="Sell products online (e-commerce)"><span class="opt-text">Sell products online (e-commerce)</span></label>
+          <label class="option-item"><input type="checkbox" name="purpose" value="Showcase a portfolio"><span class="opt-text">Showcase a portfolio of work</span></label>
+          <label class="option-item"><input type="checkbox" name="purpose" value="Provide info about services"><span class="opt-text">Provide info about services</span></label>
+          <label class="option-item"><input type="checkbox" name="purpose" value="Build brand awareness"><span class="opt-text">Build brand awareness &amp; credibility</span></label>
+          <label class="option-item"><input type="checkbox" name="purpose" value="Blog / content hub"><span class="opt-text">Serve as a blog or content hub</span></label>
+          <label class="option-item"><input type="checkbox" name="purpose" value="Booking / scheduling"><span class="opt-text">Offer booking / scheduling</span></label>
+          <label class="option-item"><input type="checkbox" name="purpose" value="Community / membership"><span class="opt-text">Community building / membership area</span></label>
+        </div>
+      </div>
+      <div class="field">
+        <label class="field__label">Other purpose (if not listed above):</label>
+        <input type="text" name="purpose_other" placeholder="Describe any other goals...">
+      </div>
+
+      <div class="field">
+        <label class="field__label">Is this a brand-new website or a redesign?</label>
+        <div class="options-grid">
+          <label class="option-item"><input type="radio" name="new_or_redesign" value="Brand-new website"><span class="opt-text">Brand-new website</span></label>
+          <label class="option-item"><input type="radio" name="new_or_redesign" value="Redesign of existing website"><span class="opt-text">Redesign of existing website</span></label>
+        </div>
+      </div>
+      <div class="field">
+        <label class="field__label">If redesigning, what do you like / dislike about your current site?</label>
+        <textarea name="redesign_feedback" rows="3" placeholder="I like the layout but the colours feel outdated..."></textarea>
+      </div>
+      <div class="field">
+        <label class="field__label">What specific pages do you need?</label>
+        <p class="field__hint">e.g., Home, About, Services, Portfolio, Blog, Contact, Shop, FAQ, Testimonials, Pricing</p>
+        <textarea name="pages_needed" rows="2" placeholder="Home, About Us, Services, Contact, Blog"></textarea>
+      </div>
+
+      <div class="field">
+        <label class="field__label">Do you need any of the following features?</label>
+        <p class="field__hint">Select all that apply.</p>
+        <div class="options-grid options-grid--2col">
+          <label class="option-item"><input type="checkbox" name="features" value="Contact form"><span class="opt-text">Contact form</span></label>
+          <label class="option-item"><input type="checkbox" name="features" value="E-commerce / online store"><span class="opt-text">E-commerce / online store</span></label>
+          <label class="option-item"><input type="checkbox" name="features" value="Blog"><span class="opt-text">Blog</span></label>
+          <label class="option-item"><input type="checkbox" name="features" value="Photo/video gallery"><span class="opt-text">Photo or video gallery</span></label>
+          <label class="option-item"><input type="checkbox" name="features" value="Client portal / login"><span class="opt-text">Client portal / login area</span></label>
+          <label class="option-item"><input type="checkbox" name="features" value="Booking / calendar"><span class="opt-text">Booking / calendar integration</span></label>
+          <label class="option-item"><input type="checkbox" name="features" value="Live chat / chatbot"><span class="opt-text">Live chat or chatbot</span></label>
+          <label class="option-item"><input type="checkbox" name="features" value="Newsletter signup"><span class="opt-text">Newsletter / email signup</span></label>
+          <label class="option-item"><input type="checkbox" name="features" value="Social media integration"><span class="opt-text">Social media feed integration</span></label>
+          <label class="option-item"><input type="checkbox" name="features" value="Multi-language"><span class="opt-text">Multi-language support</span></label>
+          <label class="option-item"><input type="checkbox" name="features" value="Analytics / tracking"><span class="opt-text">Analytics / tracking setup</span></label>
+          <label class="option-item"><input type="checkbox" name="features" value="Search functionality"><span class="opt-text">Search functionality</span></label>
+        </div>
+      </div>
+      <div class="field">
+        <label class="field__label">Other features needed:</label>
+        <input type="text" name="features_other" placeholder="Anything else you need built in?">
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════ -->
+    <!-- SECTION 5: DESIGN STYLE & AESTHETIC -->
+    <!-- ══════════════════════════════════════════════════ -->
+    <hr class="divider">
+    <div class="section">
+      <div class="section__header">
+        <span class="section__number">05</span>
+        <h2 class="section__title">Design Style &amp; Aesthetic</h2>
+      </div>
+      <p class="section__desc">This is where we dial in the visual direction. Your answers here directly shape the look, feel, and personality of your website. Pick what resonates, or mix and match.</p>
+
+      <div class="field">
+        <label class="field__label">Which design style best represents the feel you're going for?</label>
+        <p class="field__hint">Select your top 1–2 choices.</p>
+
+        <label class="style-card" onclick="this.classList.toggle('selected')">
+          <input type="checkbox" name="design_style" value="Brutalist / Neo-Brutalist">
+          <div class="style-card__content">
+            <div class="style-card__name">Brutalist / Neo-Brutalist</div>
+            <div class="style-card__desc">Raw, bold, and unapologetic. Exposed grids, oversized typography, high-contrast colours, and a deliberately unpolished look. Great for disruptors, creatives, and brands that reject conventional design norms. (e.g., Balenciaga, Craigslist)</div>
+          </div>
+        </label>
+
+        <label class="style-card" onclick="this.classList.toggle('selected')">
+          <input type="checkbox" name="design_style" value="Minimalist / Clean">
+          <div class="style-card__content">
+            <div class="style-card__name">Minimalist / Clean</div>
+            <div class="style-card__desc">Elegant simplicity. Lots of white space, refined typography, restrained colour palettes. Every element earns its place. Ideal for luxury brands and professional services. (e.g., Apple, Muji, Aesop)</div>
+          </div>
+        </label>
+
+        <label class="style-card" onclick="this.classList.toggle('selected')">
+          <input type="checkbox" name="design_style" value="Modern / Contemporary">
+          <div class="style-card__content">
+            <div class="style-card__name">Modern / Contemporary</div>
+            <div class="style-card__desc">Sleek, current, and polished. Smooth gradients, rounded elements, sans-serif fonts, and balanced layouts. A safe yet sophisticated choice. (e.g., Stripe, Notion, Airbnb)</div>
+          </div>
+        </label>
+
+        <label class="style-card" onclick="this.classList.toggle('selected')">
+          <input type="checkbox" name="design_style" value="Futuristic / Sci-Fi">
+          <div class="style-card__content">
+            <div class="style-card__name">Futuristic / Sci-Fi</div>
+            <div class="style-card__desc">Neon accents, dark backgrounds, glowing UI elements, geometric shapes, and a tech-forward feel. Perfect for startups, tech companies, and gaming brands. (e.g., SpaceX, Cyberpunk aesthetics)</div>
+          </div>
+        </label>
+
+        <label class="style-card" onclick="this.classList.toggle('selected')">
+          <input type="checkbox" name="design_style" value="Organic / Environmental">
+          <div class="style-card__content">
+            <div class="style-card__name">Organic / Environmental</div>
+            <div class="style-card__desc">Earthy tones, natural textures, flowing shapes, and an eco-conscious visual language. Suited for wellness brands, sustainability-focused companies, and outdoor industries. (e.g., Patagonia, Lush)</div>
+          </div>
+        </label>
+
+        <label class="style-card" onclick="this.classList.toggle('selected')">
+          <input type="checkbox" name="design_style" value="Editorial / Magazine">
+          <div class="style-card__content">
+            <div class="style-card__name">Editorial / Magazine</div>
+            <div class="style-card__desc">Typography-driven with a strong editorial grid. Bold headlines, layered imagery, and a storytelling flow that feels like a high-end publication. (e.g., The New York Times, Monocle, SSENSE)</div>
+          </div>
+        </label>
+
+        <label class="style-card" onclick="this.classList.toggle('selected')">
+          <input type="checkbox" name="design_style" value="Retro / Vintage">
+          <div class="style-card__content">
+            <div class="style-card__name">Retro / Vintage</div>
+            <div class="style-card__desc">Nostalgic charm with throwback colours, classic serif fonts, textured backgrounds, and handcrafted warmth. Ideal for heritage brands, craft industries, and food &amp; beverage. (e.g., craft breweries, vintage shops)</div>
+          </div>
+        </label>
+
+        <label class="style-card" onclick="this.classList.toggle('selected')">
+          <input type="checkbox" name="design_style" value="Maximalist / Expressive">
+          <div class="style-card__content">
+            <div class="style-card__name">Maximalist / Expressive</div>
+            <div class="style-card__desc">Bold colours, mixed media, layered visuals, animated elements, and sensory overload — in the best way. For brands that refuse to blend in. (e.g., Spotify Wrapped, Gucci, Memphis Design)</div>
+          </div>
+        </label>
+
+        <label class="style-card" onclick="this.classList.toggle('selected')">
+          <input type="checkbox" name="design_style" value="Corporate / Professional">
+          <div class="style-card__content">
+            <div class="style-card__name">Corporate / Professional</div>
+            <div class="style-card__desc">Structured, trustworthy, and buttoned-up. Clear hierarchy, consistent grid, muted tones, and a focus on credibility. Perfect for B2B, finance, legal, and healthcare. (e.g., Deloitte, IBM, McKinsey)</div>
+          </div>
+        </label>
+
+        <label class="style-card" onclick="this.classList.toggle('selected')">
+          <input type="checkbox" name="design_style" value="Playful / Illustrated">
+          <div class="style-card__content">
+            <div class="style-card__name">Playful / Illustrated</div>
+            <div class="style-card__desc">Custom illustrations, vibrant colours, whimsical animations, and a sense of fun. Great for younger audiences, education, children's products, or creative agencies. (e.g., Headspace, Duolingo, Slack)</div>
+          </div>
+        </label>
+      </div>
+
+      <div class="field">
+        <label class="field__label">If none of the above feel right, describe the vibe you're after:</label>
+        <textarea name="custom_style" rows="3" placeholder="I'm thinking something like..."></textarea>
+      </div>
+
+      <div class="field">
+        <label class="field__label">How would you position your website on these spectrums?</label>
+        <p class="field__hint">Drag each slider toward the side that fits your vision.</p>
+
+        <div class="spectrum">
+          <span class="spectrum__label">Minimal</span>
+          <input type="range" name="spectrum_minimal_maximal" min="1" max="5" value="3">
+          <span class="spectrum__label spectrum__label--right">Maximal</span>
+        </div>
+        <div class="spectrum">
+          <span class="spectrum__label">Serious</span>
+          <input type="range" name="spectrum_serious_playful" min="1" max="5" value="3">
+          <span class="spectrum__label spectrum__label--right">Playful</span>
+        </div>
+        <div class="spectrum">
+          <span class="spectrum__label">Simple</span>
+          <input type="range" name="spectrum_simple_complex" min="1" max="5" value="3">
+          <span class="spectrum__label spectrum__label--right">Complex</span>
+        </div>
+        <div class="spectrum">
+          <span class="spectrum__label">Formal</span>
+          <input type="range" name="spectrum_formal_casual" min="1" max="5" value="3">
+          <span class="spectrum__label spectrum__label--right">Casual</span>
+        </div>
+        <div class="spectrum">
+          <span class="spectrum__label">Classic</span>
+          <input type="range" name="spectrum_classic_trendy" min="1" max="5" value="3">
+          <span class="spectrum__label spectrum__label--right">Trendy</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════ -->
+    <!-- SECTION 7: COLOUR PREFERENCES -->
+    <!-- ══════════════════════════════════════════════════ -->
+    <hr class="divider">
+    <div class="section">
+      <div class="section__header">
+        <span class="section__number">06</span>
+        <h2 class="section__title">Colour Preferences</h2>
+      </div>
+      <p class="section__desc">Colour drives emotion and recognition. Let's make sure your palette tells the right story.</p>
+
+      <div class="field">
+        <label class="field__label">Do you have established brand colours?</label>
+        <div class="options-grid">
+          <label class="option-item"><input type="radio" name="has_brand_colours" value="Yes — I will provide hex codes"><span class="opt-text">Yes — I will provide hex codes or a brand guide</span></label>
+          <label class="option-item"><input type="radio" name="has_brand_colours" value="Some colours in mind"><span class="opt-text">I have some colours in mind but nothing finalized</span></label>
+          <label class="option-item"><input type="radio" name="has_brand_colours" value="No — need help choosing"><span class="opt-text">No — I need help choosing colours</span></label>
+        </div>
+      </div>
+      <div class="field">
+        <label class="field__label">If you have brand colours, list them here:</label>
+        <p class="field__hint">Hex codes preferred. e.g., Primary: #1A1A2E, Secondary: #6C63FF</p>
+        <textarea name="brand_colours" rows="2" placeholder="#FFFFFF, #1A1A2E, #6C63FF"></textarea>
+      </div>
+      <div class="field">
+        <label class="field__label">What mood should your colour palette convey?</label>
+        <p class="field__hint">Select all that apply.</p>
+        <div class="options-grid options-grid--2col">
+          <label class="option-item"><input type="checkbox" name="colour_mood" value="Calm and trustworthy"><span class="opt-text">Calm &amp; trustworthy (blues, greens, neutrals)</span></label>
+          <label class="option-item"><input type="checkbox" name="colour_mood" value="Energetic and bold"><span class="opt-text">Energetic &amp; bold (reds, oranges, yellows)</span></label>
+          <label class="option-item"><input type="checkbox" name="colour_mood" value="Luxurious and sophisticated"><span class="opt-text">Luxurious &amp; sophisticated (blacks, golds, deep purples)</span></label>
+          <label class="option-item"><input type="checkbox" name="colour_mood" value="Natural and organic"><span class="opt-text">Natural &amp; organic (earth tones, greens, tans)</span></label>
+          <label class="option-item"><input type="checkbox" name="colour_mood" value="Playful and vibrant"><span class="opt-text">Playful &amp; vibrant (bright, mixed palette)</span></label>
+          <label class="option-item"><input type="checkbox" name="colour_mood" value="Dark and moody"><span class="opt-text">Dark &amp; moody (deep tones, high contrast)</span></label>
+          <label class="option-item"><input type="checkbox" name="colour_mood" value="Light and airy"><span class="opt-text">Light &amp; airy (pastels, whites, soft tones)</span></label>
+          <label class="option-item"><input type="checkbox" name="colour_mood" value="Techy and futuristic"><span class="opt-text">Techy &amp; futuristic (neons, cyans, dark backgrounds)</span></label>
+        </div>
+      </div>
+      <div class="field">
+        <label class="field__label">Are there any colours you absolutely do NOT want?</label>
+        <input type="text" name="colours_avoid" placeholder="e.g., no orange, no neon green">
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════ -->
+    <!-- SECTION 8: TYPOGRAPHY -->
+    <!-- ══════════════════════════════════════════════════ -->
+    <hr class="divider">
+    <div class="section">
+      <div class="section__header">
+        <span class="section__number">07</span>
+        <h2 class="section__title">Typography &amp; Font Preferences</h2>
+      </div>
+      <p class="section__desc">Fonts carry personality. The right typeface can whisper luxury or shout rebellion.</p>
+
+      <div class="field">
+        <label class="field__label">Do you have established brand fonts?</label>
+        <div class="options-grid">
+          <label class="option-item"><input type="radio" name="has_brand_fonts" value="Yes"><span class="opt-text">Yes — I will provide font files or names</span></label>
+          <label class="option-item"><input type="radio" name="has_brand_fonts" value="No"><span class="opt-text">No — I'd like PRISM to recommend fonts</span></label>
+        </div>
+      </div>
+      <div class="field">
+        <label class="field__label">If yes, list your brand fonts here:</label>
+        <input type="text" name="brand_fonts" placeholder="e.g., Heading: Playfair Display / Body: Lato">
+      </div>
+      <div class="field">
+        <label class="field__label">What type of font style appeals to you?</label>
+        <p class="field__hint">Select your preference(s).</p>
+        <div class="options-grid">
+          <label class="option-item"><input type="checkbox" name="font_style" value="Sans-serif"><span class="opt-text">Sans-serif (clean, modern — e.g., Helvetica, Futura, Montserrat)</span></label>
+          <label class="option-item"><input type="checkbox" name="font_style" value="Serif"><span class="opt-text">Serif (classic, editorial — e.g., Playfair Display, Georgia)</span></label>
+          <label class="option-item"><input type="checkbox" name="font_style" value="Monospace"><span class="opt-text">Monospace (techy, brutalist — e.g., JetBrains Mono, Courier)</span></label>
+          <label class="option-item"><input type="checkbox" name="font_style" value="Display / Decorative"><span class="opt-text">Display / Decorative (unique character — e.g., Lobster, custom lettering)</span></label>
+          <label class="option-item"><input type="checkbox" name="font_style" value="Handwritten / Script"><span class="opt-text">Handwritten / Script (warm, personal — e.g., Dancing Script, Caveat)</span></label>
+          <label class="option-item"><input type="checkbox" name="font_style" value="Mixed pairing"><span class="opt-text">Mixed pairing (contrasting fonts for headings vs body)</span></label>
+        </div>
+      </div>
+      <div class="field">
+        <label class="field__label">Should your typography feel more:</label>
+        <div class="options-grid options-grid--2col">
+          <label class="option-item"><input type="radio" name="type_feel" value="Lightweight and airy"><span class="opt-text">Lightweight and airy</span></label>
+          <label class="option-item"><input type="radio" name="type_feel" value="Bold and commanding"><span class="opt-text">Bold and commanding</span></label>
+          <label class="option-item"><input type="radio" name="type_feel" value="Elegant and refined"><span class="opt-text">Elegant and refined</span></label>
+          <label class="option-item"><input type="radio" name="type_feel" value="Utilitarian and functional"><span class="opt-text">Utilitarian and functional</span></label>
+          <label class="option-item"><input type="radio" name="type_feel" value="Expressive and artistic"><span class="opt-text">Expressive and artistic</span></label>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════ -->
+    <!-- SECTION 9: IMAGERY & MEDIA -->
+    <!-- ══════════════════════════════════════════════════ -->
+    <hr class="divider">
+    <div class="section">
+      <div class="section__header">
+        <span class="section__number">08</span>
+        <h2 class="section__title">Imagery, Media &amp; Content</h2>
+      </div>
+      <p class="section__desc">Visuals make or break first impressions. Let's plan your visual content strategy.</p>
+
+      <div class="field">
+        <label class="field__label">Do you have professional photography or branded imagery ready to use?</label>
+        <div class="options-grid">
+          <label class="option-item"><input type="radio" name="has_imagery" value="Yes — full library"><span class="opt-text">Yes — I have a full library of images</span></label>
+          <label class="option-item"><input type="radio" name="has_imagery" value="Some — may need more"><span class="opt-text">Some — but I may need additional imagery</span></label>
+          <label class="option-item"><input type="radio" name="has_imagery" value="No — need stock or photography"><span class="opt-text">No — I will need stock photos or photography services</span></label>
+        </div>
+      </div>
+      <div class="field">
+        <label class="field__label">What type of imagery best represents your brand?</label>
+        <p class="field__hint">Select all that apply.</p>
+        <div class="options-grid options-grid--2col">
+          <label class="option-item"><input type="checkbox" name="imagery_type" value="Professional photography"><span class="opt-text">Professional photography</span></label>
+          <label class="option-item"><input type="checkbox" name="imagery_type" value="Lifestyle photography"><span class="opt-text">Lifestyle photography</span></label>
+          <label class="option-item"><input type="checkbox" name="imagery_type" value="Custom illustrations"><span class="opt-text">Custom illustrations or graphics</span></label>
+          <label class="option-item"><input type="checkbox" name="imagery_type" value="Abstract / artistic"><span class="opt-text">Abstract or artistic visuals</span></label>
+          <label class="option-item"><input type="checkbox" name="imagery_type" value="Iconography / vectors"><span class="opt-text">Iconography and vector graphics</span></label>
+          <label class="option-item"><input type="checkbox" name="imagery_type" value="Video / motion"><span class="opt-text">Video or motion content</span></label>
+          <label class="option-item"><input type="checkbox" name="imagery_type" value="3D renders"><span class="opt-text">3D renders or animations</span></label>
+          <label class="option-item"><input type="checkbox" name="imagery_type" value="User-generated content"><span class="opt-text">User-generated content</span></label>
+        </div>
+      </div>
+      <div class="field">
+        <label class="field__label">Will you provide website copy (text), or do you need copywriting assistance?</label>
+        <div class="options-grid">
+          <label class="option-item"><input type="radio" name="copywriting" value="I will provide all content"><span class="opt-text">I will provide all content</span></label>
+          <label class="option-item"><input type="radio" name="copywriting" value="I need help with some"><span class="opt-text">I'll provide some; I need help with the rest</span></label>
+          <label class="option-item"><input type="radio" name="copywriting" value="I need full copywriting"><span class="opt-text">I need full copywriting services</span></label>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════ -->
+    <!-- SECTION 10: COMPETITORS & INSPIRATION -->
+    <!-- ══════════════════════════════════════════════════ -->
+    <hr class="divider">
+    <div class="section">
+      <div class="section__header">
+        <span class="section__number">09</span>
+        <h2 class="section__title">Competitors &amp; Inspiration</h2>
+      </div>
+      <p class="section__desc">Seeing what you admire (and what you don't) helps us calibrate direction fast.</p>
+
+      <div class="field">
+        <label class="field__label">List 3–5 websites you love and briefly explain why:</label>
+        <p class="field__hint">These don't have to be in your industry. Focus on design, layout, or feel.</p>
+        <textarea name="websites_love" rows="5" placeholder="1. stripe.com — I love the clean gradients and smooth animations&#10;2. aesop.com — The typography and whitespace feel luxurious&#10;3. ..."></textarea>
+      </div>
+      <div class="field">
+        <label class="field__label">List 1–3 websites you dislike and briefly explain why:</label>
+        <textarea name="websites_dislike" rows="3" placeholder="1. example.com — It feels cluttered and outdated..."></textarea>
+      </div>
+      <div class="field">
+        <label class="field__label">Who are your top 3 competitors?</label>
+        <p class="field__hint">Include their website URLs if possible.</p>
+        <textarea name="competitors" rows="3" placeholder="1. CompetitorA.com&#10;2. CompetitorB.com&#10;3. CompetitorC.com"></textarea>
+      </div>
+      <div class="field">
+        <label class="field__label">What do you want your website to do BETTER than your competitors?</label>
+        <textarea name="better_than_competitors" rows="3" placeholder="Our site should outperform competitors by..."></textarea>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════ -->
+    <!-- SECTION 11: TECHNICAL REQUIREMENTS -->
+    <!-- ══════════════════════════════════════════════════ -->
+    <hr class="divider">
+    <div class="section">
+      <div class="section__header">
+        <span class="section__number">10</span>
+        <h2 class="section__title">Technical Requirements</h2>
+      </div>
+      <p class="section__desc">A few technical details to ensure we build on the right foundation.</p>
+
+      <div class="field">
+        <label class="field__label">Do you have a preference for a website platform?</label>
+        <div class="options-grid options-grid--2col">
+          <label class="option-item"><input type="radio" name="platform" value="WordPress"><span class="opt-text">WordPress</span></label>
+          <label class="option-item"><input type="radio" name="platform" value="Shopify"><span class="opt-text">Shopify</span></label>
+          <label class="option-item"><input type="radio" name="platform" value="Webflow"><span class="opt-text">Webflow</span></label>
+          <label class="option-item"><input type="radio" name="platform" value="Squarespace"><span class="opt-text">Squarespace</span></label>
+          <label class="option-item"><input type="radio" name="platform" value="Wix"><span class="opt-text">Wix</span></label>
+          <label class="option-item"><input type="radio" name="platform" value="Custom-coded"><span class="opt-text">Custom-coded (HTML/React/etc.)</span></label>
+          <label class="option-item"><input type="radio" name="platform" value="No preference"><span class="opt-text">No preference — recommend what's best</span></label>
+        </div>
+      </div>
+      <div class="field">
+        <label class="field__label">Do you already have hosting and a domain name?</label>
+        <div class="options-grid options-grid--2col">
+          <label class="option-item"><input type="radio" name="hosting_domain" value="Yes — both"><span class="opt-text">Yes — I have both</span></label>
+          <label class="option-item"><input type="radio" name="hosting_domain" value="Domain only"><span class="opt-text">I have a domain but need hosting</span></label>
+          <label class="option-item"><input type="radio" name="hosting_domain" value="Need both"><span class="opt-text">I need both</span></label>
+          <label class="option-item"><input type="radio" name="hosting_domain" value="Not sure"><span class="opt-text">Not sure — I need guidance</span></label>
+        </div>
+      </div>
+      <div class="field">
+        <label class="field__label">Do you require any third-party integrations?</label>
+        <p class="field__hint">Select all that apply.</p>
+        <div class="options-grid options-grid--2col">
+          <label class="option-item"><input type="checkbox" name="integrations" value="Payment gateway"><span class="opt-text">Payment gateway (Stripe, PayPal, Square)</span></label>
+          <label class="option-item"><input type="checkbox" name="integrations" value="CRM"><span class="opt-text">CRM (HubSpot, Salesforce, etc.)</span></label>
+          <label class="option-item"><input type="checkbox" name="integrations" value="Email marketing"><span class="opt-text">Email marketing (Mailchimp, Klaviyo)</span></label>
+          <label class="option-item"><input type="checkbox" name="integrations" value="Social media feeds"><span class="opt-text">Social media feeds</span></label>
+          <label class="option-item"><input type="checkbox" name="integrations" value="Google Analytics"><span class="opt-text">Google Analytics / Tag Manager</span></label>
+          <label class="option-item"><input type="checkbox" name="integrations" value="Booking system"><span class="opt-text">Booking system (Calendly, Acuity)</span></label>
+          <label class="option-item"><input type="checkbox" name="integrations" value="Accounting software"><span class="opt-text">Accounting (QuickBooks, Xero)</span></label>
+        </div>
+      </div>
+      <div class="field">
+        <label class="field__label">Other integrations needed:</label>
+        <input type="text" name="integrations_other" placeholder="Any other tools or platforms?">
+      </div>
+      <div class="field">
+        <label class="field__label">Do you have any accessibility requirements or compliance standards?</label>
+        <p class="field__hint">e.g., WCAG 2.1 AA, ADA compliance, AODA (Ontario)</p>
+        <textarea name="accessibility" rows="2" placeholder="Describe any requirements..."></textarea>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════ -->
+    <!-- SECTION 12: SEO & MARKETING -->
+    <!-- ══════════════════════════════════════════════════ -->
+    <hr class="divider">
+    <div class="section">
+      <div class="section__header">
+        <span class="section__number">11</span>
+        <h2 class="section__title">SEO &amp; Digital Marketing</h2>
+      </div>
+      <p class="section__desc">A beautiful website means nothing if nobody can find it.</p>
+
+      <div class="field">
+        <label class="field__label">Do you currently invest in SEO or digital marketing?</label>
+        <div class="options-grid">
+          <label class="option-item"><input type="radio" name="seo_status" value="Yes — actively"><span class="opt-text">Yes — actively</span></label>
+          <label class="option-item"><input type="radio" name="seo_status" value="Somewhat"><span class="opt-text">Somewhat — but I want to do more</span></label>
+          <label class="option-item"><input type="radio" name="seo_status" value="No — new territory"><span class="opt-text">No — this is new territory for me</span></label>
+        </div>
+      </div>
+      <div class="field">
+        <label class="field__label">Are there specific keywords or search terms you want to rank for?</label>
+        <textarea name="seo_keywords" rows="2" placeholder="e.g., 'custom web design Toronto', 'organic skincare shop'"></textarea>
+      </div>
+      <div class="field">
+        <label class="field__label">Would you like ongoing SEO or marketing services after launch?</label>
+        <div class="options-grid">
+          <label class="option-item"><input type="radio" name="ongoing_seo" value="Yes"><span class="opt-text">Yes</span></label>
+          <label class="option-item"><input type="radio" name="ongoing_seo" value="Maybe"><span class="opt-text">Maybe — let's discuss</span></label>
+          <label class="option-item"><input type="radio" name="ongoing_seo" value="No"><span class="opt-text">No — just the website for now</span></label>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════ -->
+    <!-- SECTION 13: TIMELINE & BUDGET -->
+    <!-- ══════════════════════════════════════════════════ -->
+    <hr class="divider">
+    <div class="section">
+      <div class="section__header">
+        <span class="section__number">12</span>
+        <h2 class="section__title">Timeline &amp; Budget</h2>
+      </div>
+      <p class="section__desc">Transparency here helps us scope the project properly and avoid surprises.</p>
+
+      <div class="field">
+        <label class="field__label">Do you have a target launch date or deadline?</label>
+        <input type="text" name="deadline" placeholder="e.g., June 2026, ASAP, no rush">
+      </div>
+      <div class="field">
+        <label class="field__label">Is there an event, campaign, or season driving this timeline?</label>
+        <input type="text" name="timeline_driver" placeholder="e.g., product launch in Q3, holiday season">
+      </div>
+      <div class="field">
+        <label class="field__label">What is your estimated budget range for this project?</label>
+        <p class="field__hint">This helps us tailor our recommendation to your scope.</p>
+        <div class="options-grid">
+          <label class="option-item"><input type="radio" name="budget" value="Under $2,500"><span class="opt-text">Under $2,500</span></label>
+          <label class="option-item"><input type="radio" name="budget" value="$2,500 – $5,000"><span class="opt-text">$2,500 – $5,000</span></label>
+          <label class="option-item"><input type="radio" name="budget" value="$5,000 – $10,000"><span class="opt-text">$5,000 – $10,000</span></label>
+          <label class="option-item"><input type="radio" name="budget" value="$10,000 – $25,000"><span class="opt-text">$10,000 – $25,000</span></label>
+          <label class="option-item"><input type="radio" name="budget" value="$25,000+"><span class="opt-text">$25,000+</span></label>
+          <label class="option-item"><input type="radio" name="budget" value="Not sure — want a quote"><span class="opt-text">Not sure — I'd like a quote based on my needs</span></label>
+        </div>
+      </div>
+      <div class="field">
+        <label class="field__label">Will you need ongoing maintenance, updates, or support after launch?</label>
+        <div class="options-grid">
+          <label class="option-item"><input type="radio" name="maintenance" value="Yes — maintenance plan"><span class="opt-text">Yes — I want a maintenance plan</span></label>
+          <label class="option-item"><input type="radio" name="maintenance" value="Maybe"><span class="opt-text">Maybe — let's discuss options</span></label>
+          <label class="option-item"><input type="radio" name="maintenance" value="No — self-manage"><span class="opt-text">No — I will manage the site myself</span></label>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════ -->
+    <!-- SECTION 14: FINAL THOUGHTS -->
+    <!-- ══════════════════════════════════════════════════ -->
+    <hr class="divider">
+    <div class="section">
+      <div class="section__header">
+        <span class="section__number">13</span>
+        <h2 class="section__title">Final Thoughts</h2>
+      </div>
+      <p class="section__desc">Anything else on your mind? This is your space to share freely.</p>
+
+      <div class="field">
+        <label class="field__label">Is there anything else you'd like us to know about your project, brand, or vision?</label>
+        <textarea name="final_thoughts" rows="5" placeholder="Anything you'd like to add that we haven't covered..."></textarea>
+      </div>
+      <div class="field">
+        <label class="field__label">How did you hear about PRISM Digital Co.?</label>
+        <input type="text" name="referral_source" placeholder="e.g., Instagram, referral from a friend, Google search">
+      </div>
+      <div class="field">
+        <label class="field__label">What is the best way to reach you, and your preferred contact hours?</label>
+        <input type="text" name="contact_preference" placeholder="e.g., Email, weekdays 9am–5pm EST">
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════ -->
+    <!-- SUBMIT -->
+    <!-- ══════════════════════════════════════════════════ -->
+    <div class="submit-wrap">
+      <button type="submit" class="submit-btn" id="submitBtn">
+        <span>Complete &amp; Submit</span>
+      </button>
+      <p style="margin-top:14px;font-size:0.78rem;color:var(--prism-text-muted);">
+        By submitting, you confirm the information provided is accurate.<br>
+        A member of the PRISM team will review your responses within 2 business days.
+      </p>
+    </div>
+  </form>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p><span>PRISM Digital Co.</span> &mdash; Every brand has a spectrum. We help you find yours.</p>
+    <p style="margin-top:6px;">Confidential &bull; Website Project Discovery Questionnaire</p>
+  </div>
+</div>
+
+<!-- ═══ Success Overlay ═══ -->
+<div class="success-overlay" id="successOverlay">
+  <div class="success-icon">&#10003;</div>
+  <h2>Submission Received!</h2>
+  <p>Thank you for completing the PRISM Discovery Questionnaire. Your responses have been sent to our team and we'll be in touch within 2 business days to schedule your discovery call.</p>
+</div>
+
+<script>
+  // ─── Progress Bar ───
+  const form = document.getElementById('prismForm');
+  const progressFill = document.getElementById('progressFill');
+  const progressPct = document.getElementById('progressPct');
+
+  function updateProgress() {
+    const fields = form.querySelectorAll('input[type="text"], input[type="email"], input[type="tel"], input[type="url"], textarea');
+    const radioGroups = {};
+    form.querySelectorAll('input[type="radio"]').forEach(r => { radioGroups[r.name] = true; });
+    const checkboxGroups = {};
+    form.querySelectorAll('input[type="checkbox"]:not([name="_gotcha"])').forEach(c => { checkboxGroups[c.name] = true; });
+
+    let total = fields.length + Object.keys(radioGroups).length + Object.keys(checkboxGroups).length;
+    let filled = 0;
+
+    fields.forEach(f => { if (f.value.trim()) filled++; });
+    Object.keys(radioGroups).forEach(name => {
+      if (form.querySelector(`input[name="${name}"]:checked`)) filled++;
+    });
+    Object.keys(checkboxGroups).forEach(name => {
+      if (form.querySelector(`input[name="${name}"]:checked`)) filled++;
+    });
+
+    // Add range sliders as always-filled
+    const pct = Math.min(100, Math.round((filled / total) * 100));
+    progressFill.style.width = pct + '%';
+    progressPct.textContent = pct + '%';
+  }
+
+  form.addEventListener('input', updateProgress);
+  form.addEventListener('change', updateProgress);
+
+  // ─── Form Submission via Fetch ───
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const btn = document.getElementById('submitBtn');
+    btn.innerHTML = '<span>Sending...</span>';
+    btn.disabled = true;
+    btn.style.opacity = '0.6';
+
+    try {
+      const formData = new FormData(form);
+      const response = await fetch(form.action, {
+        method: 'POST',
+        body: formData,
+        headers: { 'Accept': 'application/json' }
+      });
+
+      if (response.ok) {
+        document.getElementById('successOverlay').classList.add('show');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        throw new Error('Submission failed');
+      }
+    } catch (err) {
+      btn.innerHTML = '<span>Error — Try Again</span>';
+      btn.disabled = false;
+      btn.style.opacity = '1';
+      alert('Something went wrong. Please check your connection and try again.');
+    }
+  });
+
+  // ─── Section fade-in on scroll ───
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.animationDelay = '0.1s';
+        entry.target.style.animationPlayState = 'running';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.section').forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>
